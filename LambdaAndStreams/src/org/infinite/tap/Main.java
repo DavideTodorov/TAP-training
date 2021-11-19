@@ -1,21 +1,19 @@
 package org.infinite.tap;
 
 import org.infinite.tap.domain.*;
-import org.infinite.tap.domain.StringJoiner;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Main {
 
     public static void main(String[] args) {
         List<Customer> customers = initializeCustomer();
-        List<Order> orders = initiliazeOrders();
+        List<Order> orders = initializeOrders();
         List<Product> products = initiliazeProducts();
 
         // 1. Refactor with Streams
@@ -56,6 +54,7 @@ public class Main {
         // 5. Find the sum of all TOYS products prices
         double toysSum = products
                 .stream()
+                .filter(p -> p.getCategory() == Category.TOYS)
                 .mapToDouble(Product::getPrice)
                 .sum();
 
@@ -85,7 +84,6 @@ public class Main {
                         o.getStatus() == Status.DELIVERED);
         System.out.println();
 
-        //ToDo
         // 9. Find the category of the max priced product that have ever been ordered
         Category category = orders
                 .stream()
@@ -183,7 +181,7 @@ public class Main {
         return products;
     }
 
-    private static List<Order> initiliazeOrders() {
+    private static List<Order> initializeOrders() {
         List<Order> orders = new ArrayList<>();
 
 
@@ -194,7 +192,7 @@ public class Main {
                 new Product("clothes2", Category.CLOTHES, 130.2)), LocalDate.now(), Status.DELIVERED);
 
         Order order3 = new Order(List.of(new Product("toys", Category.TOYS, 5.4),
-                new Product("clothes4", Category.CLOTHES, 30.4)), LocalDate.now(), Status.PENDING);
+                new Product("clothes4", Category.CLOTHES, 30.4)), LocalDate.of(2021,11,15), Status.PENDING);
 
         Order order4 = new Order(List.of(new Product("book3", Category.BOOKS, 19),
                 new Product("clothes5", Category.CLOTHES, 100.33)), LocalDate.now(), Status.CANCELED);

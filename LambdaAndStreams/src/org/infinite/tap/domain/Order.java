@@ -39,7 +39,7 @@ public class Order {
                 new Product("clothes2", Category.CLOTHES, 130.2)), LocalDate.now(), Status.DELIVERED);
 
         Order order3 = new Order(List.of(new Product("toys", Category.TOYS, 5.4),
-                new Product("clothes4", Category.CLOTHES, 30.4)), LocalDate.now(), Status.PENDING);
+                new Product("clothes4", Category.CLOTHES, 30.4)), LocalDate.of(2021, 11,15), Status.PENDING);
 
         Order order4 = new Order(List.of(new Product("book3", Category.BOOKS, 19),
                 new Product("clothes5", Category.CLOTHES, 100.33)), LocalDate.now(), Status.CANCELED);
