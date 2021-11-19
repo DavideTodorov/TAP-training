@@ -12,9 +12,9 @@ import java.util.stream.Stream;
 public class Main {
 
     public static void main(String[] args) {
-        List<Customer> customers = initializeCustomer();
-        List<Order> orders = initializeOrders();
-        List<Product> products = initiliazeProducts();
+        List<Customer> customers = Customer.getAll();
+        List<Order> orders = Order.getAll();
+        List<Product> products = Product.getAll();
 
         // 1. Refactor with Streams
         List<Customer> secondTierCustomer = customers
