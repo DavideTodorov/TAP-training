@@ -6,6 +6,11 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -162,11 +167,39 @@ public class Main {
 
 
 
-        //ToDo
+
         // 15. Implement a collector that concatenates String - StringJoiner implements Collector
-        // String names = Customer.getAll().collect(new StringJoiner());
+         String names = Customer.getAll().stream().collect(new StringJoiner());
 
+        System.out.println();
+    }
 
+    public static class StringJoiner implements Collector<Customer,StringBuilder,String>{
+
+        @Override
+        public Supplier<StringBuilder> supplier() {
+            return StringBuilder::new;
+        }
+
+        @Override
+        public BiConsumer<StringBuilder, Customer> accumulator() {
+            return (sb, c) -> sb.append(c.getName());
+        }
+
+        @Override
+        public BinaryOperator<StringBuilder> combiner() {
+            return StringBuilder::append;
+        }
+
+        @Override
+        public Function<StringBuilder, String> finisher() {
+            return StringBuilder::toString;
+        }
+
+        @Override
+        public Set<Characteristics> characteristics() {
+            return Collections.emptySet();
+        }
     }
 
     private static List<Product> initiliazeProducts() {
