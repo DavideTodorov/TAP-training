@@ -10,11 +10,14 @@ cache = TTLCache(maxsize=100, ttl=10800)
 
 
 def get_joke():
-    joke_response = requests.get("https://v2.jokeapi.dev/joke/Any")
-    random_joke_setup = joke_response.json()["setup"]
-    random_joke_delivery = joke_response.json()["delivery"]
-    random_joke_text = random_joke_setup + " " + random_joke_delivery
-    return random_joke_text
+    try:
+        joke_response = requests.get("https://v2.jokeapi.dev/joke/Any")
+        random_joke_setup = joke_response.json()["setup"]
+        random_joke_delivery = joke_response.json()["delivery"]
+        random_joke_text = random_joke_setup + " " + random_joke_delivery
+        return random_joke_text
+    except KeyError:
+        return "Sorry, the API couldn't load a joke :("
 
 
 @cached(cache)
@@ -35,7 +38,8 @@ def go_home():
             currency_dict = currencies_response.json()["rates"]
         except KeyError:
             currency_rate_str = f"'{first_currency}' is not a invalid currency!"
-            return render_template('home.html', rate=currency_rate_str)
+            random_joke_text = get_joke()
+            return render_template('home.html', rate=currency_rate_str, joke=random_joke_text)
         except json.decoder.JSONDecodeError:
             currency_rate_str = f"'{first_currency}' is not a invalid currency!"
             random_joke_text = get_joke()
