@@ -1,3 +1,4 @@
+import re
 import time
 from colorama import init
 from termcolor import colored
@@ -40,6 +41,9 @@ class LiftManager():
 
             if input_command.lower() == "ground":
                 input_command = 0
+            elif re.search("[a-zA-Z]", input_command) is not None:
+                print(colored("Invalid command", 'red'))
+                continue
 
             input_command = int(input_command)
 
