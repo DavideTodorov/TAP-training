@@ -47,11 +47,6 @@ class LiftManager():
                 self.lift.go_up(input_command)
             elif input_command < self.lift.curr_floor:
                 self.lift.go_down(input_command)
-            # else:
-            #     if input_command == 0:
-            #         print("You are now on the ground floor")
-            #     else:
-            #         print(f"You are on floor {input_command}")
 
             last_used_time = time.time()
             last_used_time += 15
