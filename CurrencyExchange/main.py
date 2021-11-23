@@ -16,7 +16,12 @@ def go_home():
 
 
         r = requests.get(f"https://open.er-api.com/v6/latest/{first_currency}")
-        currency_dict = r.json()["rates"]
+
+        try:
+            currency_dict = r.json()["rates"]
+        except KeyError:
+            currency_rate_str = "You have entered invalid currencies!"
+            return render_template('home.html', rate=currency_rate_str)
 
         first_currency_val = currency_dict[first_currency]
         second_currency_val = currency_dict[second_currency]
