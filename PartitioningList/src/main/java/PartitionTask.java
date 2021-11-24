@@ -19,27 +19,33 @@ public class PartitionTask {
 
     //Big(O): n*3 * log(n)
     public static boolean findSubsequence(int[] arr) {
-        //If the elements are two, and they are different return false
         if (arr.length == 2 && arr[0] != arr[1]) {
+            //If the elements are two, and they are different return false
             return false;
         } else if (arr.length == 2) {
+            //If the elements are two and they are equal return true
             return true;
         }
 
-        //The halfSum should be the sum of subsets
-        int halfSum = 0;
+        //Find the totalSum of the elements
+        int sum = 0;
         for (int j : arr) {
-            halfSum += j;
+            sum += j;
         }
 
-        if (halfSum % 2 == 1) {
+        //If the sum is not an even number than they cannot be split
+        if (sum % 2 == 1) {
             return false;
         }
 
+        //The halfSum should be the sum of subsets
+        int halfSum = sum % 2;
+
+        //Sort the array so we can subtract from the halfSum
         Arrays.sort(arr);
 
-        halfSum /= 2;
 
+        //If the halfSum reaches 0 then we have two subsets with equal sums and return 0
         for (int i = arr.length - 1; i >= 0; i--) {
             if (halfSum - arr[i] >= 0){
                 halfSum -= arr[i];
