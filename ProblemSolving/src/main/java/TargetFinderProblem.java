@@ -1,5 +1,3 @@
-package LabBeforeLectures;
-
 public class TargetFinderProblem {
 
     public static int[] findIndexes(int[] numbers, int target){
