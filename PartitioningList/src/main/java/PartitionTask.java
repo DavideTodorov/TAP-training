@@ -17,6 +17,7 @@ arr[] = {1, 5, 3} => Output: false
 */
 public class PartitionTask {
 
+    //Big(O): n*3 * log(n)
     public static boolean findSubsequence(int[] arr) {
         //If the elements are two, and they are different return false
         if (arr.length == 2 && arr[0] != arr[1]) {
