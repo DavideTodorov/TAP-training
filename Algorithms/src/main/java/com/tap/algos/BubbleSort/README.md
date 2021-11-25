@@ -1,6 +1,6 @@
 # BubbleSort
 
-## Table of contents:
+## Table of contents
 
 * [Overview](#overview)
 * [Algorithm explanation](#algorithm-explanation)
@@ -9,7 +9,7 @@
 
 > Simple sorting algorithm with O(n^2) complexity.
 
-### Algorithm explanation:
+### Algorithm explanation
 
 > BubbleSort uses two enhanced for loops to iterate over data.
 > With the 'i' in the first for loop we access the element with which we

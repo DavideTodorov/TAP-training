@@ -5,7 +5,7 @@ import com.tap.algos.Utils;
 public class BubbleSortMain {
 
     public static void main(String[] args) {
-        int[] ints = Utils.generateArray(10);
+        int[] ints = Utils.generateArray(5);
         BubbleSortMain.sort(ints);
 
         for (int anInt : ints) {
