@@ -1,0 +1,11 @@
+dontinline,*.*_all_jmhStub
+dontinline,*.*_avgt_jmhStub
+dontinline,*.*_sample_jmhStub
+dontinline,*.*_ss_jmhStub
+dontinline,*.*_thrpt_jmhStub
+inline,com/tap/algos/BenchmarkAlgos.benchMarkBS
+inline,com/tap/algos/BenchmarkAlgos.benchMarkIS
+inline,com/tap/algos/BenchmarkAlgos.benchMarkInsertion
+inline,com/tap/algos/BenchmarkAlgos.benchMarkMS
+inline,com/tap/algos/BenchmarkAlgos.benchMarkQS
+inline,com/tap/algos/BenchmarkAlgos.benchMarkSS

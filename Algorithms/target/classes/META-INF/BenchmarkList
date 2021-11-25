@@ -1,0 +1,6 @@
+JMH S 28 com.tap.algos.BenchmarkAlgos S 62 com.tap.algos.jmh_generated.BenchmarkAlgos_benchMarkBS_jmhTest S 11 benchMarkBS S 11 AverageTime E A 1 1 1 E I 1 1 E E I 1 3 E E I 1 1 I 1 1 E E E E E U 11 NANOSECONDS E E 
+JMH S 28 com.tap.algos.BenchmarkAlgos S 62 com.tap.algos.jmh_generated.BenchmarkAlgos_benchMarkIS_jmhTest S 11 benchMarkIS S 11 AverageTime E A 1 1 1 E I 1 1 E E I 1 3 E E I 1 0 I 1 1 E E E E E U 11 NANOSECONDS E E 
+JMH S 28 com.tap.algos.BenchmarkAlgos S 69 com.tap.algos.jmh_generated.BenchmarkAlgos_benchMarkInsertion_jmhTest S 18 benchMarkInsertion S 11 AverageTime E A 1 1 1 E I 1 1 E E I 1 3 E E I 1 0 I 1 1 E E E E E U 11 NANOSECONDS E E 
+JMH S 28 com.tap.algos.BenchmarkAlgos S 62 com.tap.algos.jmh_generated.BenchmarkAlgos_benchMarkMS_jmhTest S 11 benchMarkMS S 11 AverageTime E A 1 1 1 E I 1 1 E E I 1 3 E E I 1 0 I 1 1 E E E E E U 11 NANOSECONDS E E 
+JMH S 28 com.tap.algos.BenchmarkAlgos S 62 com.tap.algos.jmh_generated.BenchmarkAlgos_benchMarkQS_jmhTest S 11 benchMarkQS S 11 AverageTime E A 1 1 1 E I 1 1 E E I 1 3 E E I 1 0 I 1 1 E E E E E U 11 NANOSECONDS E E 
+JMH S 28 com.tap.algos.BenchmarkAlgos S 62 com.tap.algos.jmh_generated.BenchmarkAlgos_benchMarkSS_jmhTest S 11 benchMarkSS S 11 AverageTime E A 1 1 1 E I 1 1 E E I 1 3 E E I 1 0 I 1 1 E E E E E U 11 NANOSECONDS E E 
