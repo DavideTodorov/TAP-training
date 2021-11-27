@@ -8,7 +8,8 @@ public class MainframeProductProvider implements ProductProvider {
     public synchronized Product get(String productId) throws IllegalCallerException {
 
         if (random.nextBoolean()) {
-            throw new IllegalCallerException();
+            //ToDo: Think of a proper exception handling; what to do if the method returns null;
+//            throw new IllegalCallerException();
         }
 
         return new Product();

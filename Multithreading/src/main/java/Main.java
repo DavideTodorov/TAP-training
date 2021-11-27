@@ -1,13 +1,5 @@
-import java.io.Closeable;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Main {
 
@@ -17,21 +9,15 @@ public class Main {
         MainframeProductProvider mainframeProductProvider = new MainframeProductProvider();
         CachedProductProvider cachedProductProvider = new CachedProductProvider(mainframeProductProvider);
 
-        try {
-            Product p1 = cachedProductProvider.get("product1");
-        } catch (IllegalCallerException e) {
-            throw new RuntimeException();
-        }
+
+        Product p1 = cachedProductProvider.get("product1");
+
 
         ExecutorService es = Executors.newFixedThreadPool(10);
 
-        try {
+        new Thread(() -> cachedProductProvider.get("product1")).start();
+        new Thread(() -> cachedProductProvider.get("product2")).start();
 
-            new Thread(() -> cachedProductProvider.get("product1")).start();
-            new Thread(() -> cachedProductProvider.get("product2")).start();
-        } catch (IllegalCallerException e) {
-            throw new RuntimeException();
-        }
 
         Set<Callable<Product>> tasks = Set.of(
                 () -> cachedProductProvider.get("product1"),
@@ -56,9 +42,5 @@ public class Main {
                 throw new RuntimeException(e);
             }
         });
-
-
     }
-
-
 }
