@@ -12,6 +12,13 @@ public class BubbleSortMain {
             System.out.println(anInt);
         }
 
+        String[] arr = Utils.generateStringArray(5);
+        BubbleSortMain.sort(arr);
+
+        for (String s : arr) {
+            System.out.println(s);
+        }
+
     }
 
     public static int[] sort(int[] arr){
@@ -29,4 +36,19 @@ public class BubbleSortMain {
         return arr;
     }
 
+
+    public static <T extends Comparable<T>> T[] sort(T[] arr){
+
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = i+1; j < arr.length; j++) {
+                if (arr[i].compareTo(arr[j]) >0){
+                    T temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+        }
+
+        return arr;
+    }
 }
