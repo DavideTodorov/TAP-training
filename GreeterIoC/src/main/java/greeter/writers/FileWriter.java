@@ -13,7 +13,14 @@ public class FileWriter implements StringWriter{
             return;
         }
 
-        File file = new File(fileName[0]);
+        File file = null;
+
+        if (fileName.length >= 2){
+            file = new File(fileName[1]);
+        }else {
+            file = new File(fileName[0]);
+        }
+
 
         try {
             BufferedWriter bw = new BufferedWriter(new java.io.FileWriter(file));
