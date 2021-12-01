@@ -4,7 +4,9 @@ import greeter.Greeter;
 import greeter.readers.ConsoleStringReader;
 import greeter.readers.FileStringReader;
 import greeter.writers.ConsoleWriter;
+import greeter.writers.FileWriter;
 
+import java.io.File;
 import java.util.HashMap;
 
 
@@ -15,6 +17,7 @@ public class Container {
         container.put(ConsoleStringReader.class, new ConsoleStringReader());
         container.put(FileStringReader.class, new FileStringReader());
         container.put(ConsoleWriter.class, new ConsoleWriter());
+        container.put(FileWriter.class, new FileWriter());
         container.put(Greeter.class, new Greeter());
     }
 

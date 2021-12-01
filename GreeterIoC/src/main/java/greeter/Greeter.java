@@ -10,6 +10,7 @@ public class Greeter {
     public Greeter(){
     }
 
+    //Constructor DI
     public Greeter(StringReader reader, StringWriter writer) {
         this.stringReader = reader;
         this.stringWriter = writer;
@@ -17,7 +18,7 @@ public class Greeter {
 
     public void greet(String... filePath){
         String stringRead = stringReader.readString(filePath);
-        stringWriter.write(stringRead);
+        stringWriter.write(stringRead, filePath);
     }
 
     //Setter DI
