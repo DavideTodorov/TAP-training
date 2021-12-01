@@ -1,22 +1,32 @@
 package greeter;
 
-import IoCCointainer.Container;
-import greeter.writers.ConsoleWriter;
 import greeter.readers.StringReader;
-import greeter.writers.Writer;
+import greeter.writers.StringWriter;
 
 public class Greeter {
-    private final Container container = new Container();
-    private final Writer writer;
-    private final StringReader stringReader;
+    private  StringWriter stringWriter;
+    private  StringReader stringReader;
 
-    public Greeter(Class<? extends StringReader> clazz) {
-        this.stringReader = container.resolve(clazz);
-        this.writer = new ConsoleWriter();
+    public Greeter(){
+    }
+
+    public Greeter(StringReader reader, StringWriter writer) {
+        this.stringReader = reader;
+        this.stringWriter = writer;
     }
 
     public void greet(String... filePath){
         String stringRead = stringReader.readString(filePath);
-        writer.write(stringRead);
+        stringWriter.write(stringRead);
+    }
+
+    //Setter DI
+    public void setStringReader(StringReader stringReader) {
+        this.stringReader = stringReader;
+    }
+
+    //Setter DI
+    public void setStringWriter(StringWriter stringWriter) {
+        this.stringWriter = stringWriter;
     }
 }

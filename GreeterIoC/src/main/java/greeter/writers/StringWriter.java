@@ -1,6 +1,6 @@
 package greeter.writers;
 
-public interface Writer {
+public interface StringWriter {
 
     void write(String text);
 }

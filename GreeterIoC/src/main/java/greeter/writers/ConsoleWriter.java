@@ -1,7 +1,7 @@
 package greeter.writers;
 
 
-public class ConsoleWriter implements Writer {
+public class ConsoleWriter implements StringWriter {
 
     @Override
     public void write(String text) {
