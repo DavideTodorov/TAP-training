@@ -45,7 +45,11 @@ public class CachedProductProvider implements ProductProvider {
                 }
                 System.out.println("MainFrame didn't give product. Trying again...");
             }
+
             cachedProducts.put(productId, product);
+
+            System.out.println("Getting Product by " + Thread.currentThread().getName());
+            return product;
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
@@ -53,7 +57,6 @@ public class CachedProductProvider implements ProductProvider {
         }
 
 
-        System.out.println("Getting Product by " + Thread.currentThread().getName());
         return product;
     }
 }
