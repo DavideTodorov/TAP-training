@@ -2,9 +2,8 @@ import json
 import random
 
 import uvicorn as uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import requests
-
 
 app = FastAPI()
 
@@ -13,7 +12,16 @@ all_users_transactions = {}
 
 @app.post("/transaction/create")
 def create_transaction(user_id: int):
-    new_transaction = requests.get("http://127.0.0.1:8000/info/generate/id").text
+    new_transaction = "error"
+
+    for i in (1, 10):
+        new_transaction = requests.get("http://127.0.0.1:8000/info/generate/id").text
+        if not new_transaction.__contains__("connection failed"):
+            break
+
+    if new_transaction == "error":
+        return "Third party API failure."
+
     new_transaction = json.loads(new_transaction)
 
     if user_id not in all_users_transactions:
@@ -25,6 +33,9 @@ def create_transaction(user_id: int):
 
 @app.get("/transactions/all")
 def get_all_transactions(user_id: int):
+    if user_id not in all_users_transactions:
+        return []
+
     return all_users_transactions[user_id]
 
 

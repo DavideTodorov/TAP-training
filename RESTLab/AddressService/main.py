@@ -25,7 +25,16 @@ def create_address(user_id: int):
 
 @app.get("/address/all")
 def get_all_addresses(user_id: int):
+    if user_id not in addresses:
+        return []
+
     return {user_id: addresses[user_id]}
+
+
+@app.post("/address/delete")
+def delete_addresses(user_id: int):
+    del addresses[user_id]
+    return f"Addresses for user with id {user_id} were deleted."
 
 
 if __name__ == '__main__':

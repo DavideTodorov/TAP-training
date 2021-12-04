@@ -23,19 +23,31 @@ def create_user(id: int, first_name: str, last_name: str):
     address_name = json.loads(new_address)["address_name"]
     new_user.addresses_list.append(address_name)
 
-    return json.dumps(new_user.__dict__)
+    return new_user
 
 
 @app.get("/user/get")
 def get_user(id: int):
     if id not in user_dictionary:
-        return "User doesn't exist!"
+        return "User does not exist!"
 
     user = user_dictionary[id]
     get_addresses(user)
     get_transactions(user)
 
-    return json.dumps(user.__dict__)
+    return user
+
+
+@app.post("/user/update")
+def update_user(id: int, new_first_name: str, new_last_name: str):
+    if id not in user_dictionary:
+        return "User does not exist!"
+
+    user = user_dictionary[id]
+    user.first_name = new_first_name
+    user.last_name = new_last_name
+
+    return user
 
 
 def get_addresses(user):
