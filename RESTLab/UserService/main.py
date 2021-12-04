@@ -31,7 +31,13 @@ def get_user(id: int):
     new_address = requests.get(f"http://127.0.0.1:8002/address/all?user_id={id}")
     print(new_address.text)
     addresses_dic = json.loads(new_address.text)
-    user.addresses_list = addresses_dic[id]
+    values = addresses_dic[str(id)]
+
+    print(values)
+
+    for address in values:
+        address_value = address["address_name"]
+        user.addresses_list.append(address_value)
 
     return json.dumps(user.__dict__)
 
