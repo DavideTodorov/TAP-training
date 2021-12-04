@@ -13,6 +13,9 @@ user_dictionary = {}
 
 @app.get("/user/create")
 def create_user(id: int, first_name: str, last_name: str):
+    if id in user_dictionary:
+        return "User already exists!"
+
     new_user = User(id, first_name, last_name)
     user_dictionary[id] = new_user
 
@@ -26,18 +29,23 @@ def create_user(id: int, first_name: str, last_name: str):
 
 @app.get("/user/get")
 def get_user(id: int):
+    if id not in user_dictionary:
+        return "User doesn't exist!"
+
     user = user_dictionary[id]
 
     new_address = requests.get(f"http://127.0.0.1:8002/address/all?user_id={id}")
-    print(new_address.text)
     addresses_dic = json.loads(new_address.text)
     values = addresses_dic[str(id)]
 
-    print(values)
-
     for address in values:
         address_value = address["address_name"]
-        user.addresses_list.append(address_value)
+        if address_value not in user.addresses_list:
+            user.addresses_list.append(address_value)
+
+    user_transactions_response = requests.get(f"http://127.0.0.1:8003/transactions/all/?user_id={id}").text
+    user_transactions_list = json.loads(user_transactions_response)
+    user_dictionary[id].transactions_list = user_transactions_list
 
     return json.dumps(user.__dict__)
 
