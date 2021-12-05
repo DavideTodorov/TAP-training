@@ -24,14 +24,6 @@ public class Main {
         new Thread(() -> products.add(cachedProductProvider.get("product1"))).start();
         new Thread(() -> products.add(cachedProductProvider.get("product2"))).start();
 
-        new Thread(() -> {
-            Lock lock = new ReentrantLock();
-            lock.lock();
-            cachedProductProvider.get("product1");
-            lock.unlock();
-        })
-                .start();
-
 
         Set<Callable<Product>> tasks = Set.of(
                 () -> cachedProductProvider.get("product1"),
