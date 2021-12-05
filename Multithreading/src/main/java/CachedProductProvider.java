@@ -2,6 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -21,15 +22,7 @@ public class CachedProductProvider implements ProductProvider {
 
     @Override
     public Product get(String productId) {
-        Product product;
-        product = cachedProducts.get(productId);
-
-        if (product != null) {
-            System.out.println("Getting Product by " + Thread.currentThread().getName());
-            return product;
-        }
-
-
+        Product product = null;
         /*
         Simulate Striped behaviour
          */
@@ -42,25 +35,38 @@ public class CachedProductProvider implements ProductProvider {
 
         currentLock = locks.get(productId);
 
-        currentLock.lock();
-       /*
+        try {
+            currentLock.tryLock(500, TimeUnit.MILLISECONDS);
+            product = cachedProducts.get(productId);
+
+            if (product != null) {
+                System.out.println("Getting Product by " + Thread.currentThread().getName());
+                return product;
+            }
+
+            /*
        This while loop will handle the case of thrown errors from MainframeProductProvider.
        If the MainframeProductProvider throws an error our product will be null, and we are not supposed to return nulls.
        That is why we are executing the same method until we get a valid product.
        */
-        boolean productIsEmpty = true;
-        while (productIsEmpty) {
-            try {
-                product = mainframeProductProvider.get(productId);
-                productIsEmpty = false;
-            } catch (IllegalCallerException e) {
+            boolean productIsEmpty = true;
+            while (productIsEmpty) {
+                try {
+                    product = mainframeProductProvider.get(productId);
+                    productIsEmpty = false;
+                } catch (IllegalCallerException e) {
+                    System.out.println("MainFrame didn't give product. Trying again...");
+                }
                 System.out.println("MainFrame didn't give product. Trying again...");
             }
-            System.out.println("MainFrame didn't give product. Trying again...");
-        }
 
-        cachedProducts.put(productId, product);
-        currentLock.unlock();
+            cachedProducts.put(productId, product);
+            currentLock.unlock();
+
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         System.out.println("Getting Product by " + Thread.currentThread().getName());
         return product;
