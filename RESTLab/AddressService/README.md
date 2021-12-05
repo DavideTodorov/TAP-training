@@ -6,7 +6,7 @@
 * [Get addresses](#get-addresses)
 * [Delete addresses](#delete-addresses)
 
-###Overview
+### Overview
 > Service that handles creation and modification of user's addresses.
 
 ### Create address
