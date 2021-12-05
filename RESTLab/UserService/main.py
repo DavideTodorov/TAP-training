@@ -11,7 +11,7 @@ app = FastAPI()
 user_dictionary = {}
 
 
-@app.get("/user/create")
+@app.post("/user/create")
 def create_user(id: int, first_name: str, last_name: str):
     if id in user_dictionary:
         return "User already exists!"
@@ -64,6 +64,9 @@ def delete_user(user_id: int):
 
 @app.post("/user/transactions/create")
 def create_transaction_for_user(user_id: int):
+    if user_id not in user_dictionary:
+        return "User does not exist!"
+
     transaction_response = requests.post(f"http://127.0.0.1:8003/transactions/create/?user_id={user_id}").text
     transaction_response = json.loads(transaction_response)
     return f"New transaction: {transaction_response}"
@@ -81,7 +84,8 @@ def get_addresses(user):
 
 
 def get_transactions(user, transactions_count):
-    user_transactions_response = requests.get(f"http://127.0.0.1:8003/transactions/all/?user_id={user.id}&transactions_count={transactions_count}").text
+    user_transactions_response = requests.get(
+        f"http://127.0.0.1:8003/transactions/all/?user_id={user.id}&transactions_count={transactions_count}").text
     user_transactions_list = json.loads(user_transactions_response)
     user.transactions_list = user_transactions_list
 
