@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Stream;
 
 public class Main {
 
@@ -21,6 +24,14 @@ public class Main {
         new Thread(() -> products.add(cachedProductProvider.get("product1"))).start();
         new Thread(() -> products.add(cachedProductProvider.get("product2"))).start();
 
+        new Thread(() -> {
+            Lock lock = new ReentrantLock();
+            lock.lock();
+            cachedProductProvider.get("product1");
+            lock.unlock();
+        })
+                .start();
+
 
         Set<Callable<Product>> tasks = Set.of(
                 () -> cachedProductProvider.get("product1"),
@@ -36,10 +47,11 @@ public class Main {
                 () -> cachedProductProvider.get("product1")
         );
 
+
         es.invokeAll(tasks).forEach(x -> {
             try {
-                x.get();
-                products.add(x.get());
+                Product product = x.get();
+                products.add(product);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             } catch (ExecutionException e) {
