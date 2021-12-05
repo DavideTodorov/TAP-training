@@ -4,7 +4,7 @@ import requests
 import uvicorn as uvicorn
 from fastapi import FastAPI
 
-from UserDTO import User
+from User import User
 
 app = FastAPI()
 

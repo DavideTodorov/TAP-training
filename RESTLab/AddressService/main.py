@@ -4,7 +4,7 @@ import random
 import uvicorn as uvicorn
 from fastapi import FastAPI
 
-from AddressDTO import Address
+from Address import Address
 
 app = FastAPI()
 
