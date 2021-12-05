@@ -10,11 +10,11 @@ app = FastAPI()
 all_users_transactions = {}
 
 
-@app.post("/transaction/create")
+@app.post("/transactions/create")
 def create_transaction(user_id: int):
     new_transaction = "error"
 
-    for i in (1, 10):
+    for i in range(10):
         new_transaction = requests.get("http://127.0.0.1:8000/info/generate/id").text
         if not new_transaction.__contains__("connection failed"):
             break
@@ -32,11 +32,31 @@ def create_transaction(user_id: int):
 
 
 @app.get("/transactions/all")
-def get_all_transactions(user_id: int):
+def get_transactions(user_id: int, transactions_count: int):
     if user_id not in all_users_transactions:
         return []
 
-    return all_users_transactions[user_id]
+    all_users_transactions[user_id].sort(key=lambda e: e["dateOfExecution"])
+
+    transactions_to_return = []
+
+    counter = 0
+    for transaction in all_users_transactions[user_id]:
+        if counter == transactions_count:
+            break
+        transactions_to_return.append(transaction)
+        counter += 1
+
+    return transactions_to_return
+
+
+@app.post("/transactions/delete")
+def delete_all_transactions(user_id: int):
+    if user_id not in all_users_transactions:
+        return "No transactions"
+
+    del all_users_transactions[user_id]
+    return "Transactions were deleted"
 
 
 if __name__ == '__main__':

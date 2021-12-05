@@ -27,13 +27,13 @@ def create_user(id: int, first_name: str, last_name: str):
 
 
 @app.get("/user/get")
-def get_user(id: int):
+def get_user(id: int, transactions_count: int):
     if id not in user_dictionary:
         return "User does not exist!"
 
     user = user_dictionary[id]
     get_addresses(user)
-    get_transactions(user)
+    get_transactions(user, transactions_count)
 
     return user
 
@@ -50,6 +50,25 @@ def update_user(id: int, new_first_name: str, new_last_name: str):
     return user
 
 
+@app.post("/user/delete")
+def delete_user(user_id: int):
+    if user_id not in user_dictionary:
+        return "User does not exist!"
+
+    requests.post(f"http://127.0.0.1:8002/address/delete?user_id={user_id}")
+    requests.post(f"http://127.0.0.1:8003/transactions/delete?user_id={user_id}")
+
+    del user_dictionary[user_id]
+    return f"User with id {user_id} was deleted."
+
+
+@app.post("/user/transactions/create")
+def create_transaction_for_user(user_id: int):
+    transaction_response = requests.post(f"http://127.0.0.1:8003/transactions/create/?user_id={user_id}").text
+    transaction_response = json.loads(transaction_response)
+    return f"New transaction: {transaction_response}"
+
+
 def get_addresses(user):
     new_address = requests.get(f"http://127.0.0.1:8002/address/all?user_id={user.id}")
     addresses_dic = json.loads(new_address.text)
@@ -61,8 +80,8 @@ def get_addresses(user):
             user.addresses_list.append(address_value)
 
 
-def get_transactions(user):
-    user_transactions_response = requests.get(f"http://127.0.0.1:8003/transactions/all/?user_id={user.id}").text
+def get_transactions(user, transactions_count):
+    user_transactions_response = requests.get(f"http://127.0.0.1:8003/transactions/all/?user_id={user.id}&transactions_count={transactions_count}").text
     user_transactions_list = json.loads(user_transactions_response)
     user.transactions_list = user_transactions_list
 
