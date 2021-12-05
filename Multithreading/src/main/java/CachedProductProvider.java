@@ -9,7 +9,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class CachedProductProvider implements ProductProvider {
     private final ConcurrentHashMap<String, Product> cachedProducts;
-    private final Map<Thread, Lock> locks;
+    private final Map<String, Lock> locks;
     private final MainframeProductProvider mainframeProductProvider;
 
     public CachedProductProvider(MainframeProductProvider mainframeProductProvider) {
@@ -31,29 +31,28 @@ public class CachedProductProvider implements ProductProvider {
 
 
         /*
-        I tried to simulate the logic behind Striped
+        Simulate Striped behaviour
          */
-        Thread currentThread = Thread.currentThread();
-        Lock currentLock = null;
+        Lock currentLock;
 
-        if (!locks.containsKey(currentThread)) {
+        if (!locks.containsKey(productId)) {
             currentLock = new ReentrantLock(true);
-            locks.put(currentThread, currentLock);
+            locks.put(productId, currentLock);
         }
 
-        currentLock = locks.get(currentThread);
-
+        currentLock = locks.get(productId);
 
         currentLock.lock();
-
        /*
        This while loop will handle the case of thrown errors from MainframeProductProvider.
        If the MainframeProductProvider throws an error our product will be null, and we are not supposed to return nulls.
        That is why we are executing the same method until we get a valid product.
        */
-        while (product == null) {
+        boolean productIsEmpty = true;
+        while (productIsEmpty) {
             try {
                 product = mainframeProductProvider.get(productId);
+                productIsEmpty = false;
             } catch (IllegalCallerException e) {
                 System.out.println("MainFrame didn't give product. Trying again...");
             }
@@ -61,7 +60,6 @@ public class CachedProductProvider implements ProductProvider {
         }
 
         cachedProducts.put(productId, product);
-
         currentLock.unlock();
 
         System.out.println("Getting Product by " + Thread.currentThread().getName());
