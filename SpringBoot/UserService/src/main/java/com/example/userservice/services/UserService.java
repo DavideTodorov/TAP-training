@@ -1,9 +1,6 @@
 package com.example.userservice.services;
 
-import com.example.userservice.models.User;
 import com.example.userservice.models.UserDTO;
-
-import java.util.UUID;
 
 public interface UserService {
 
@@ -14,4 +11,8 @@ public interface UserService {
     String createAddressForUser(String firstName);
 
     String createTransaction(String firstName);
+
+    String updateUser(String firstName, String newFirstName, String newLastName);
+
+    String deleteUser(String firstName);
 }

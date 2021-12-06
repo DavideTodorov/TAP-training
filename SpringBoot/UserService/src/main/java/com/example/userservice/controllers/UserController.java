@@ -45,4 +45,14 @@ public class UserController {
     public String createTransaction(@RequestParam String firstName){
         return userService.createTransaction(firstName);
     }
+
+    @PatchMapping("/user/{firstName}")
+    public String updateUser(@PathVariable String firstName, @RequestParam String newFirstName, @RequestParam String newLastName){
+        return userService.updateUser(firstName, newFirstName, newLastName);
+    }
+
+    @DeleteMapping("/user/{firstName}")
+    public String deleteUser(@PathVariable String firstName){
+        return userService.deleteUser(firstName);
+    }
 }

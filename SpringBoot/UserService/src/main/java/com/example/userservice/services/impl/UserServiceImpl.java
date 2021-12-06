@@ -100,6 +100,31 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    @Override
+    public String updateUser(String firstName, String newFirstName, String newLastName) {
+        if (!checkIfUserExists(firstName)) {
+            return "User does not exist!";
+        }
+
+        User user = userMap.remove(firstName);
+        user.setFirstName(newFirstName);
+        user.setLastName(newLastName);
+        userMap.put(user.getFirstName(), user);
+
+        return gson.toJson(user);
+    }
+
+    @Override
+    public String deleteUser(String firstName) {
+        if (!checkIfUserExists(firstName)) {
+            return "User does not exist!";
+        }
+
+        userMap.remove(firstName);
+
+        return "User was deleted.";
+    }
+
     private Address getAddressForUser(User user) {
         String addressServiceUrl = String.format("http://localhost:8082/address/create?userId=%s", user.getId());
 
