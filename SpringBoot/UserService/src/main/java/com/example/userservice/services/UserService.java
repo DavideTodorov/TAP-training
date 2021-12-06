@@ -10,4 +10,8 @@ public interface UserService {
     String createUser(UserDTO userDTO);
 
     String getUser(String firstName);
+
+    String createAddressForUser(String firstName);
+
+    String createTransaction(String firstName);
 }

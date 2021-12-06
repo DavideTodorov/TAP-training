@@ -34,4 +34,15 @@ public class UserController {
 
         return userService.getUser(firstName);
     }
+
+    //http://localhost:8081/user/address/create
+    @PostMapping("user/address/create")
+    public String createAddress(@RequestParam String firstName) {
+        return userService.createAddressForUser(firstName);
+    }
+
+    @PostMapping("user/transaction/create")
+    public String createTransaction(@RequestParam String firstName){
+        return userService.createTransaction(firstName);
+    }
 }

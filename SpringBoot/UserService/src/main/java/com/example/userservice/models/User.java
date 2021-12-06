@@ -8,13 +8,15 @@ public class User {
     private UUID id;
     private String firstName;
     private String lastName;
-    private List<Address> address;
+    private List<Address> addresses;
+    private List<String> transactions;
 
     public User(String firstName, String lastName) {
         this.id = UUID.randomUUID();
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address = new ArrayList<>();
+        this.addresses = new ArrayList<>();
+        this.transactions = new ArrayList<>();
     }
 
     public UUID getId() {
@@ -41,11 +43,19 @@ public class User {
         this.lastName = lastName;
     }
 
-    public List<Address> getAddress() {
-        return address;
+    public List<Address> getAddresses() {
+        return addresses;
     }
 
-    public void setAddress(List<Address> address) {
-        this.address = address;
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
+
+    public List<String> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<String> transactions) {
+        this.transactions = transactions;
     }
 }

@@ -5,14 +5,10 @@ import com.example.userservice.models.User;
 import com.example.userservice.models.UserDTO;
 import com.example.userservice.services.UserService;
 import com.google.gson.Gson;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -26,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String createUser(UserDTO userDTO) {
-        if (userMap.containsKey(userDTO.getFirstName())) {
+        if (checkIfUserExists(userDTO.getFirstName())) {
             return "Username with the same firstName already exists.";
         }
 
@@ -36,7 +32,7 @@ public class UserServiceImpl implements UserService {
         Address addressFromJson = getAddressForUser(user);
 
 
-        user.getAddress().add(addressFromJson);
+        user.getAddresses().add(addressFromJson);
         userMap.put(user.getFirstName(), user);
 
         return gson.toJson(user);
@@ -45,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String getUser(String firstName) {
-        if (!userMap.containsKey(firstName)) {
+        if (!checkIfUserExists(firstName)) {
             return "User does not exist!";
         }
 
@@ -55,18 +51,43 @@ public class UserServiceImpl implements UserService {
         RestTemplate restTemplate = new RestTemplate();
         String addresses = restTemplate.getForObject(addressServiceUrl, String.class);
 
-        List list = gson.fromJson(addresses, List.class);
-        System.out.println();
-//                .forEach(x -> {
-//            Address address = (Address) x;
-//            if (!user.getAddress().contains(address)) {
-//                user.getAddress().add(address);
-//            }
-//        });
+        Address[] allAddresses = gson.fromJson(addresses, Address[].class);
+
+        user.getAddresses().clear();
+        user.getAddresses().addAll(Arrays.asList(allAddresses));
 
         return gson.toJson(user);
 
 
+    }
+
+    @Override
+    public String createAddressForUser(String firstName) {
+        if (!checkIfUserExists(firstName)) {
+            return "User does not exist!";
+        }
+
+        User user = userMap.get(firstName);
+        Address addressForUser = getAddressForUser(user);
+
+        return gson.toJson(addressForUser);
+    }
+
+    @Override
+    public String createTransaction(String firstName) {
+        if (!checkIfUserExists(firstName)) {
+            return "User does not exist!";
+        }
+
+        User user = userMap.get(firstName);
+        String addressServiceUrl = "http://localhost:8083/transaction";
+
+        RestTemplate template = new RestTemplate();
+        String result = template.postForObject(addressServiceUrl, null, String.class);
+
+        user.getTransactions().add(result);
+
+        return gson.toJson(user);
     }
 
     private Address getAddressForUser(User user) {
@@ -77,5 +98,11 @@ public class UserServiceImpl implements UserService {
 
         return gson.fromJson(result, Address.class);
     }
+
+    private boolean checkIfUserExists(String firstName) {
+        return userMap.containsKey(firstName);
+    }
 }
+
+
 
