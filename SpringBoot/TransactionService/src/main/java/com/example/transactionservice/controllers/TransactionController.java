@@ -1,8 +1,7 @@
 package com.example.transactionservice.controllers;
 
 import com.example.transactionservice.services.TransactionService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -14,9 +13,14 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @PostMapping("/transaction")
-    public String createTransaction() {
-        return transactionService.createTransaction(UUID.randomUUID());
+    @PostMapping("/transaction/new")
+    public String createTransaction(@RequestParam UUID userId) {
+        return transactionService.createTransaction(userId);
+    }
+
+    @GetMapping("/transaction/all/{userId}")
+    public String getAllTransactions(@PathVariable UUID userId){
+        return transactionService.getAll(userId);
     }
 
 }

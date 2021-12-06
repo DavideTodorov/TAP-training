@@ -40,4 +40,10 @@ public class TransactionServiceImpl implements TransactionService {
 
         return result;
     }
+
+    @Override
+    public String getAll(UUID userId) {
+        transactionMap.get(userId);
+        return gson.toJson(transactionMap.get(userId));
+    }
 }

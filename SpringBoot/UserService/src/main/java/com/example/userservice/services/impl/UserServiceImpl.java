@@ -56,6 +56,16 @@ public class UserServiceImpl implements UserService {
         user.getAddresses().clear();
         user.getAddresses().addAll(Arrays.asList(allAddresses));
 
+        String transactionServiceUrl = String.format("http://localhost:8083/transaction/all/%s", user.getId());
+        String transactions = restTemplate.getForObject(transactionServiceUrl, String.class);
+
+        String[] transactionsArr = gson.fromJson(transactions, String[].class);
+        user.getTransactions().clear();
+
+        if (transactionsArr != null) {
+            user.getTransactions().addAll(Arrays.asList(transactionsArr));
+        }
+
         return gson.toJson(user);
 
 
@@ -80,14 +90,14 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = userMap.get(firstName);
-        String addressServiceUrl = "http://localhost:8083/transaction";
+        String addressServiceUrl = String.format("http://localhost:8083/transaction/new?userId=%s", user.getId());
 
         RestTemplate template = new RestTemplate();
         String result = template.postForObject(addressServiceUrl, null, String.class);
 
         user.getTransactions().add(result);
 
-        return gson.toJson(user);
+        return result;
     }
 
     private Address getAddressForUser(User user) {

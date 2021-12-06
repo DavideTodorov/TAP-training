@@ -7,8 +7,6 @@ public class Configuration {
 
     @Bean
     public Gson getGson() {
-        Gson gson = new Gson();
-
         return new Gson();
     }
 }
