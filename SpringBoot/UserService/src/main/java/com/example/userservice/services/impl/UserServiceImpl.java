@@ -5,6 +5,8 @@ import com.example.userservice.models.User;
 import com.example.userservice.models.UserDTO;
 import com.example.userservice.services.UserService;
 import com.google.gson.Gson;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,17 +24,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String createUser(UserDTO userDTO) {
-        if (userMap.containsKey(userDTO.getId())) {
-            return "User already exists!";
-        }
-        String addressServiceUrl = String.format("http://localhost:8082/address/create?userId=%d", userDTO.getId());
-        RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(addressServiceUrl, String.class);
+        String addressServiceUrl = String.format("http://localhost:8082/address/create?userId=%s", userDTO.getId());
+
+        RestTemplate template = new RestTemplate();
+        String result = template.postForObject(addressServiceUrl, null, String.class);
 
         Address addressFromJson = gson.fromJson(result, Address.class);
 
-        User user = new User(userDTO.getId(), userDTO.getFirstName(), userDTO.getLastName(), addressFromJson);
-        userMap.put(user.getId(), user);
+        User user = new User(userDTO.getFirstName(), userDTO.getLastName(), addressFromJson);
+
         return gson.toJson(user);
     }
 

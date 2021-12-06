@@ -4,9 +4,7 @@ import com.example.userservice.models.User;
 import com.example.userservice.models.UserDTO;
 import com.example.userservice.services.UserService;
 import com.google.gson.Gson;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
@@ -19,22 +17,21 @@ public class UserController {
         this.gson = gson;
     }
 
-    //http://localhost:8081/user/create?id=1&firstName=Gosho&lastName=Goshov
-    @GetMapping("/user/create")
-    public String createUser(@RequestParam Long id, @RequestParam String firstName,
+    //http://localhost:8081/user/create?firstName=Gosho&lastName=Goshov
+    @PostMapping("/user/create")
+    public String createUser(@RequestParam String firstName,
                              @RequestParam String lastName) {
 
-        UserDTO userDTO = new UserDTO(id, firstName, lastName);
-        String userJson = userService.createUser(userDTO);
+        UserDTO userDTO = new UserDTO(firstName, lastName);
+        String user = userService.createUser(userDTO);
 
-        return userJson;
+        return user;
     }
 
-    //http://localhost:8081/user/get?id=1
-    @GetMapping("/user/get")
-    public String getUser(@RequestParam Long id) {
-        String userJson = userService.getUser(id);
+    //http://localhost:8081/user/{firstName}
+    @GetMapping("/user/{firstName}")
+    public String getUser(@PathVariable String firstName) {
 
-        return userJson;
+        return null;
     }
 }

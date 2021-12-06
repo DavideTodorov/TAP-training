@@ -1,23 +1,25 @@
 package com.example.userservice.models;
 
+import java.util.UUID;
+
 public class User {
-    private Long id;
+    private UUID id;
     private String firstName;
     private String lastName;
     private Address address;
 
-    public User(Long id, String firstName, String lastName, Address address) {
-        this.id = id;
+    public User(String firstName, String lastName, Address address) {
+        this.id = UUID.randomUUID();
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

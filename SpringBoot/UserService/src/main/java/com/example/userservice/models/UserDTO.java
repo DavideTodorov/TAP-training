@@ -1,21 +1,23 @@
 package com.example.userservice.models;
 
+import java.util.UUID;
+
 public class UserDTO {
-    private Long id;
+    private UUID id;
     private String firstName;
     private String lastName;
 
-    public UserDTO(Long id, String firstName, String lastName) {
-        this.id = id;
+    public UserDTO(String firstName, String lastName) {
+        this.id = UUID.randomUUID();
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
