@@ -1,18 +1,20 @@
 package com.example.userservice.models;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class User {
     private UUID id;
     private String firstName;
     private String lastName;
-    private Address address;
+    private List<Address> address;
 
-    public User(String firstName, String lastName, Address address) {
+    public User(String firstName, String lastName) {
         this.id = UUID.randomUUID();
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address = address;
+        this.address = new ArrayList<>();
     }
 
     public UUID getId() {
@@ -39,11 +41,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Address getAddress() {
+    public List<Address> getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(List<Address> address) {
         this.address = address;
     }
 }

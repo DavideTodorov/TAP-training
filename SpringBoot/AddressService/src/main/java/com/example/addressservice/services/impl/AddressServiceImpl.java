@@ -5,14 +5,12 @@ import com.example.addressservice.services.AddressService;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class AddressServiceImpl implements AddressService {
 
-    private final HashMap<UUID, Address> usersAddresses;
+    private final HashMap<UUID, List<Address>> usersAddresses;
     private final Gson gson;
 
     public AddressServiceImpl(Gson gson) {
@@ -22,15 +20,15 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public String createAddress(UUID userId) {
-        if (usersAddresses.containsKey(userId)) {
-            return gson.toJson(usersAddresses.get(userId));
+        if (!usersAddresses.containsKey(userId)) {
+            usersAddresses.put(userId, new ArrayList<>());
         }
 
         Random random = new Random();
         int randomNumber = random.nextInt(1001);
 
         Address address = new Address(String.format("%s street", randomNumber));
-        usersAddresses.put(userId, address);
+        usersAddresses.get(userId).add(address);
 
         return gson.toJson(address);
     }
