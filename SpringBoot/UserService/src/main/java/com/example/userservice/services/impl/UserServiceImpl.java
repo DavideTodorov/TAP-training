@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -40,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public String getUser(String firstName) {
+    public String getUser(String firstName, int transactionsCount) {
         if (!checkIfUserExists(firstName)) {
             return "User does not exist!";
         }
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
         user.getTransactions().clear();
 
         if (transactionsArr != null) {
-            user.getTransactions().addAll(Arrays.asList(transactionsArr));
+            user.getTransactions().addAll(Arrays.stream(transactionsArr).limit(transactionsCount).toList());
         }
 
         return gson.toJson(user);

@@ -30,9 +30,9 @@ public class UserController {
 
     //http://localhost:8081/user/{firstName}
     @GetMapping("/user/{firstName}")
-    public String getUser(@PathVariable String firstName) {
+    public String getUser(@PathVariable String firstName, @RequestParam int transactionsCount) {
 
-        return userService.getUser(firstName);
+        return userService.getUser(firstName, transactionsCount);
     }
 
     //http://localhost:8081/user/address/create

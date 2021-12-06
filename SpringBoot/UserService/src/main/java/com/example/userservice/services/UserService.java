@@ -6,7 +6,7 @@ public interface UserService {
 
     String createUser(UserDTO userDTO);
 
-    String getUser(String firstName);
+    String getUser(String firstName, int transactionsCount);
 
     String createAddressForUser(String firstName);
 
