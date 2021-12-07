@@ -1,0 +1,115 @@
+-- Simple Queries
+-- Query 1:
+select
+	customer_id,
+	first_name,
+	last_name,
+	email
+from
+	customer;
+	
+-- Query 2:
+select
+	distinct rating
+from film;
+
+-- Query 3:
+select
+	email
+from 
+	customer
+where 
+	customer.first_name = 'Nancy' and customer.last_name = 'Thomas';
+	
+-- Query 4:
+select
+	description
+from 
+	film
+where
+	film.title = 'Outlaw Hanky';
+	
+-- Query 5:
+select
+	a.phone
+from rental as r
+	join customer as c
+	on c.customer_id = r.customer_id
+	join address as a
+	on c.address_id = a.address_id
+where
+	a.address = '259 Ipoh Drive'
+limit 1;
+
+-- Query 6:
+select
+	c.customer_id
+from customer as c
+	join payment as p
+	on p.customer_id = c.customer_id
+order by
+	p.amount DESC
+limit 10;
+
+-- Query 7:
+select
+	title
+from 
+	film
+where 
+	film_id between 1 and 5;
+	
+-- Query 8:
+select
+	count(payment_id)
+from 
+	payment
+where
+	payment.amount > 5;
+	
+-- Query 9:
+select
+	film.film_id,
+	film.title
+from
+	film
+where film.title like 'D%';
+
+-- Query 10:
+select
+	count(distinct a.district)
+from customer as c
+	join address as a
+	on c.address_id = a.address_id;
+	
+-- Query 11:
+select
+	count(film.film_id)
+from 
+	film
+where 
+	rating = 'R' and replacement_cost in (5,15);
+	
+-- Query 12:
+select
+	count(film.film_id)
+from 
+	film
+where 
+	lower(film.title) like '%truman%';
+	
+-- Query 13:
+select 
+	count(payment.customer_id)
+from 
+	payment
+where 
+	payment.amount = 0 and payment.staff_id = 1;
+	
+-- Query 14:
+select
+	sum(payment.amount)
+from 
+	payment
+where 
+	payment.staff_id = 1;
