@@ -1,0 +1,55 @@
+-- Advanced Queries
+-- Query 1:
+select
+	count(payment_id)
+from 
+	payment
+group by 
+	staff_id;
+	
+-- Query 2:
+select
+	rating,
+	avg(replacement_cost) as avg_repacement_cost
+from 
+	film
+group by
+	rating;
+
+-- Query 3:
+select
+	customer_id,
+	sum(amount)
+from
+	payment
+group by 
+	customer_id
+order by
+	sum(amount) DESC
+limit 5;
+
+-- Query 4:
+select
+	c.customer_id,
+	c.first_name,
+	c.last_name,
+	count(p.payment_id)
+from
+	customer as c
+	join payment as p
+	on p.customer_id = c.customer_id
+group by
+	c.customer_id, c.first_name, c.last_name
+having
+	count(p.payment_id) >= 40;
+
+-- Query 5:
+select
+	rating,
+	round(avg(rental_duration), 2)
+from
+	film
+group by 
+	rating
+having
+	avg(rental_duration) > 5;
