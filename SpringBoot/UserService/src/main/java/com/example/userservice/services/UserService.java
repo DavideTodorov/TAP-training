@@ -1,6 +1,6 @@
 package com.example.userservice.services;
 
-import com.example.userservice.models.UserDTO;
+import com.example.userservice.models.entities.UserDTO;
 
 public interface UserService {
 

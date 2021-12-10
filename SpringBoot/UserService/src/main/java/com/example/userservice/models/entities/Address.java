@@ -1,8 +1,14 @@
-package com.example.userservice.models;
+package com.example.userservice.models.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.UUID;
 
+@Entity
+@Table(name = "addresses")
 public class Address {
+    @Id
     private UUID id;
     private String streetName;
 

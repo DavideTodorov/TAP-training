@@ -1,7 +1,6 @@
 package com.example.userservice.controllers;
 
-import com.example.userservice.models.User;
-import com.example.userservice.models.UserDTO;
+import com.example.userservice.models.entities.UserDTO;
 import com.example.userservice.services.UserService;
 import com.google.gson.Gson;
 import org.springframework.web.bind.annotation.*;

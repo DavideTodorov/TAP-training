@@ -1,4 +1,4 @@
-package com.example.userservice.models;
+package com.example.userservice.models.entities;
 
 import java.util.UUID;
 

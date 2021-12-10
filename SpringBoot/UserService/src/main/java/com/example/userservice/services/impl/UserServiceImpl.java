@@ -1,23 +1,33 @@
 package com.example.userservice.services.impl;
 
-import com.example.userservice.models.Address;
-import com.example.userservice.models.User;
-import com.example.userservice.models.UserDTO;
+import com.example.userservice.models.entities.Address;
+import com.example.userservice.models.entities.Transaction;
+import com.example.userservice.models.entities.User;
+import com.example.userservice.models.entities.UserDTO;
+import com.example.userservice.models.repositories.AddressRepository;
+import com.example.userservice.models.repositories.UserRepository;
 import com.example.userservice.services.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final HashMap<String, User> userMap;
     private final Gson gson;
+    private final ObjectMapper objectMapper;
+    private final UserRepository userRepository;
+    private final AddressRepository addressRepository;
 
-    public UserServiceImpl(Gson gson) {
+    public UserServiceImpl(Gson gson, ObjectMapper objectMapper, UserRepository userRepository, AddressRepository addressRepository) {
         this.gson = gson;
+        this.objectMapper = objectMapper;
+        this.userRepository = userRepository;
+        this.addressRepository = addressRepository;
         this.userMap = new HashMap<>();
     }
 
@@ -27,16 +37,25 @@ public class UserServiceImpl implements UserService {
             return "Username with the same firstName already exists.";
         }
 
-
         User user = new User(userDTO.getFirstName(), userDTO.getLastName());
 
         Address addressFromJson = getAddressForUser(user);
 
+        addressRepository.save(addressFromJson);
 
         user.getAddresses().add(addressFromJson);
         userMap.put(user.getFirstName(), user);
 
-        return gson.toJson(user);
+        String userJson = "";
+        try {
+            userJson = objectMapper.writeValueAsString(user);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        userRepository.save(user);
+
+        return userJson;
     }
 
 
@@ -60,14 +79,23 @@ public class UserServiceImpl implements UserService {
         String transactionServiceUrl = String.format("http://localhost:8083/transaction/all/%s", user.getId());
         String transactions = restTemplate.getForObject(transactionServiceUrl, String.class);
 
-        String[] transactionsArr = gson.fromJson(transactions, String[].class);
-        user.getTransactions().clear();
-
-        if (transactionsArr != null) {
-            user.getTransactions().addAll(Arrays.stream(transactionsArr).limit(transactionsCount).toList());
+        Transaction transaction = null;
+        try {
+            transaction = objectMapper.readValue(transactions, Transaction.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
 
-        return gson.toJson(user);
+        System.out.println(transaction);
+
+        String resultJson = "";
+        try {
+            resultJson = objectMapper.writeValueAsString(user);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return resultJson;
 
 
     }
@@ -96,7 +124,14 @@ public class UserServiceImpl implements UserService {
         RestTemplate template = new RestTemplate();
         String result = template.postForObject(addressServiceUrl, null, String.class);
 
-        user.getTransactions().add(result);
+        Transaction transaction = null;
+        try {
+            transaction = objectMapper.readValue(result, Transaction.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        user.getTransactions().add(transaction);
 
         return result;
     }

@@ -1,0 +1,9 @@
+package com.example.userservice.models.repositories;
+
+import com.example.userservice.models.entities.User;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.UUID;
+
+public interface UserRepository extends CrudRepository<User, UUID> {
+}

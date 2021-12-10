@@ -2,6 +2,7 @@ package com.example.transactionservice.services.impl;
 
 import com.example.transactionservice.models.Transaction;
 import com.example.transactionservice.services.TransactionService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
@@ -65,6 +66,15 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public String getAll(UUID userId) {
         transactionMap.get(userId);
-        return gson.toJson(transactionMap.get(userId));
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String resultJson = "";
+        try {
+            resultJson = objectMapper.writeValueAsString(transactionMap.get(userId));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return resultJson;
     }
 }

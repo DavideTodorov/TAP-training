@@ -14,9 +14,8 @@ public class TransactionController {
     }
 
     @PostMapping("/transaction/new")
-    public String createTransaction() {
-//        @RequestParam UUID userId
-        return transactionService.createTransaction(UUID.randomUUID());
+    public String createTransaction(@RequestParam UUID userId) {
+        return transactionService.createTransaction(userId);
     }
 
     @GetMapping("/transaction/all/{userId}")

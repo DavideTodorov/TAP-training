@@ -1,15 +1,27 @@
-package com.example.userservice.models;
+package com.example.userservice.models.entities;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Entity
+@Table(name = "users")
 public class User {
+
+    @Id
     private UUID id;
     private String firstName;
     private String lastName;
+    @OneToMany
     private List<Address> addresses;
-    private List<String> transactions;
+    @OneToMany
+    private List<Transaction> transactions;
+
+    public User() {
+        this.addresses = new ArrayList<>();
+        this.transactions = new ArrayList<>();
+    }
 
     public User(String firstName, String lastName) {
         this.id = UUID.randomUUID();
@@ -51,11 +63,11 @@ public class User {
         this.addresses = addresses;
     }
 
-    public List<String> getTransactions() {
+    public List<Transaction> getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(List<String> transactions) {
+    public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
     }
 }
