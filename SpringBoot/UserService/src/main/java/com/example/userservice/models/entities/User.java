@@ -13,9 +13,9 @@ public class User {
     private UUID id;
     private String firstName;
     private String lastName;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Address> addresses;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Transaction> transactions;
 
     public User() {

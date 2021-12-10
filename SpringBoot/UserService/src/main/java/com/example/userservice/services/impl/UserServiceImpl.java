@@ -5,6 +5,7 @@ import com.example.userservice.models.entities.Transaction;
 import com.example.userservice.models.entities.User;
 import com.example.userservice.models.entities.UserDTO;
 import com.example.userservice.models.repositories.AddressRepository;
+import com.example.userservice.models.repositories.TransactionRepository;
 import com.example.userservice.models.repositories.UserRepository;
 import com.example.userservice.services.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,22 +14,24 @@ import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private final HashMap<String, User> userMap;
     private final Gson gson;
     private final ObjectMapper objectMapper;
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
+    private final TransactionRepository transactionRepository;
 
-    public UserServiceImpl(Gson gson, ObjectMapper objectMapper, UserRepository userRepository, AddressRepository addressRepository) {
+    public UserServiceImpl(Gson gson, ObjectMapper objectMapper, UserRepository userRepository,
+                           AddressRepository addressRepository, TransactionRepository transactionRepository) {
         this.gson = gson;
         this.objectMapper = objectMapper;
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
-        this.userMap = new HashMap<>();
+        this.transactionRepository = transactionRepository;
     }
 
     @Override
@@ -40,11 +43,8 @@ public class UserServiceImpl implements UserService {
         User user = new User(userDTO.getFirstName(), userDTO.getLastName());
 
         Address addressFromJson = getAddressForUser(user);
-
         addressRepository.save(addressFromJson);
-
         user.getAddresses().add(addressFromJson);
-        userMap.put(user.getFirstName(), user);
 
         String userJson = "";
         try {
@@ -65,39 +65,21 @@ public class UserServiceImpl implements UserService {
             return "User does not exist!";
         }
 
-        User user = userMap.get(firstName);
+        User user = userRepository.getUserByFirstName(firstName).orElse(null);
 
-        String addressServiceUrl = String.format("http://localhost:8082/address/%s", user.getId());
-        RestTemplate restTemplate = new RestTemplate();
-        String addresses = restTemplate.getForObject(addressServiceUrl, String.class);
+        List<Transaction> addressList = user.getTransactions().stream().limit(transactionsCount)
+                .collect(Collectors.toList());
 
-        Address[] allAddresses = gson.fromJson(addresses, Address[].class);
+        user.setTransactions(addressList);
 
-        user.getAddresses().clear();
-        user.getAddresses().addAll(Arrays.asList(allAddresses));
-
-        String transactionServiceUrl = String.format("http://localhost:8083/transaction/all/%s", user.getId());
-        String transactions = restTemplate.getForObject(transactionServiceUrl, String.class);
-
-        Transaction transaction = null;
+        String userJson = "";
         try {
-            transaction = objectMapper.readValue(transactions, Transaction.class);
+            userJson = objectMapper.writeValueAsString(user);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
 
-        System.out.println(transaction);
-
-        String resultJson = "";
-        try {
-            resultJson = objectMapper.writeValueAsString(user);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        return resultJson;
-
-
+        return userJson;
     }
 
     @Override
@@ -106,10 +88,21 @@ public class UserServiceImpl implements UserService {
             return "User does not exist!";
         }
 
-        User user = userMap.get(firstName);
+        User user = userRepository.getUserByFirstName(firstName).orElse(null);
         Address addressForUser = getAddressForUser(user);
+        addressRepository.save(addressForUser);
 
-        return gson.toJson(addressForUser);
+        user.getAddresses().add(addressForUser);
+        userRepository.save(user);
+
+        String userJson = "";
+        try {
+            userJson = objectMapper.writeValueAsString(user);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return userJson;
     }
 
     @Override
@@ -118,7 +111,7 @@ public class UserServiceImpl implements UserService {
             return "User does not exist!";
         }
 
-        User user = userMap.get(firstName);
+        User user = userRepository.getUserByFirstName(firstName).orElse(null);
         String addressServiceUrl = String.format("http://localhost:8083/transaction/new?userId=%s", user.getId());
 
         RestTemplate template = new RestTemplate();
@@ -131,9 +124,19 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
 
+        transactionRepository.save(transaction);
         user.getTransactions().add(transaction);
+        userRepository.save(user);
 
-        return result;
+
+        String userJson = "";
+        try {
+            userJson = objectMapper.writeValueAsString(user);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return userJson;
     }
 
     @Override
@@ -142,12 +145,19 @@ public class UserServiceImpl implements UserService {
             return "User does not exist!";
         }
 
-        User user = userMap.remove(firstName);
+        User user = userRepository.getUserByFirstName(firstName).orElse(null);
         user.setFirstName(newFirstName);
         user.setLastName(newLastName);
-        userMap.put(user.getFirstName(), user);
+        userRepository.save(user);
 
-        return gson.toJson(user);
+        String userJson = "";
+        try {
+            userJson = objectMapper.writeValueAsString(user);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return userJson;
     }
 
     @Override
@@ -156,7 +166,15 @@ public class UserServiceImpl implements UserService {
             return "User does not exist!";
         }
 
-        userMap.remove(firstName);
+        User user = userRepository.getUserByFirstName(firstName).orElse(null);
+
+        List<Address> addresses = user.getAddresses();
+        addressRepository.deleteAll(addresses);
+
+        List<Transaction> transactions = user.getTransactions();
+        transactionRepository.deleteAll(transactions);
+
+        userRepository.delete(user);
 
         return "User was deleted.";
     }
@@ -171,7 +189,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean checkIfUserExists(String firstName) {
-        return userMap.containsKey(firstName);
+        return userRepository.getUserByFirstName(firstName).isPresent();
     }
 }
 
