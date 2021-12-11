@@ -1,4 +1,4 @@
-package com.example.movieservice.Entity;
+package com.example.movieservice.Model.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
