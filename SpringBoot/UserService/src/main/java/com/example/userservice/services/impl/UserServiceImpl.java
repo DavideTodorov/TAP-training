@@ -223,7 +223,6 @@ public class UserServiceImpl implements UserService {
         return allMoviesJson;
     }
 
-
     private Address getAddressForUser(User user) {
         String addressServiceUrl = String.format("http://localhost:8082/address/create?userId=%s", user.getId());
 

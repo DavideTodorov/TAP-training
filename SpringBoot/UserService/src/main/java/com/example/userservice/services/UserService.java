@@ -19,4 +19,5 @@ public interface UserService {
     String rentMovie(String movieName, String userFirstName);
 
     String getAllMovies();
+
 }

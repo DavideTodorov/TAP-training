@@ -15,6 +15,7 @@ public class Movie {
     private String name;
     private boolean isAvailable;
 
+
     public Movie() {
     }
 

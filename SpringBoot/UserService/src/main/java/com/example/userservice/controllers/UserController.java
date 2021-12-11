@@ -16,6 +16,7 @@ public class UserController {
         this.gson = gson;
     }
 
+
     @PostMapping("/user/create")
     public String createUser(@RequestParam String firstName,
                              @RequestParam String lastName) {
@@ -26,26 +27,31 @@ public class UserController {
         return user;
     }
 
+
     @GetMapping("/user/{firstName}")
     public String getUser(@PathVariable String firstName, @RequestParam int transactionsCount) {
 
         return userService.getUser(firstName, transactionsCount);
     }
 
+
     @PostMapping("user/address/create")
     public String createAddress(@RequestParam String firstName) {
         return userService.createAddressForUser(firstName);
     }
+
 
     @PostMapping("user/transaction/create")
     public String createTransaction(@RequestParam String firstName) {
         return userService.createTransaction(firstName);
     }
 
+
     @PatchMapping("/user/{firstName}")
     public String updateUser(@PathVariable String firstName, @RequestParam String newFirstName, @RequestParam String newLastName) {
         return userService.updateUser(firstName, newFirstName, newLastName);
     }
+
 
     @DeleteMapping("/user/{firstName}")
     public String deleteUser(@PathVariable String firstName) {
@@ -53,13 +59,14 @@ public class UserController {
     }
 
 
-    @GetMapping("user/{userFirstName}/movie/{movieName}")
-    public String rentMovie(@PathVariable String userFirstName, @PathVariable String movieName) {
-        return userService.rentMovie(movieName, userFirstName);
-    }
-
     @GetMapping("/user/movies/all")
     public String getAllMovies() {
         return userService.getAllMovies();
+    }
+
+
+    @PostMapping("user/{userFirstName}/movie/{movieName}")
+    public String rentMovie(@PathVariable String userFirstName, @PathVariable String movieName) {
+        return userService.rentMovie(movieName, userFirstName);
     }
 }
