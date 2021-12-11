@@ -15,4 +15,6 @@ public interface UserService {
     String updateUser(String firstName, String newFirstName, String newLastName);
 
     String deleteUser(String firstName);
+
+    String rentMovie(String movieName, String userFirstName);
 }

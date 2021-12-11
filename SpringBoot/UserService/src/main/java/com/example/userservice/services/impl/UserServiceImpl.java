@@ -1,9 +1,6 @@
 package com.example.userservice.services.impl;
 
-import com.example.userservice.models.entities.Address;
-import com.example.userservice.models.entities.Transaction;
-import com.example.userservice.models.entities.User;
-import com.example.userservice.models.entities.UserDTO;
+import com.example.userservice.models.entities.*;
 import com.example.userservice.models.repositories.AddressRepository;
 import com.example.userservice.models.repositories.TransactionRepository;
 import com.example.userservice.models.repositories.UserRepository;
@@ -12,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -178,6 +176,45 @@ public class UserServiceImpl implements UserService {
 
         return "User was deleted.";
     }
+
+    @Override
+    public String rentMovie(String movieName, String userFirstName) {
+        if (!checkIfUserExists(userFirstName)) {
+            return "User does not exist!";
+        }
+
+        String movieURL = String.format("http://localhost:8085/movie/%s", movieName);
+        RestTemplate template = new RestTemplate();
+
+        String movieJson = template.getForObject(movieURL, String.class);
+
+        if (!movieJson.contains("id")) {
+            return "Movie is not available or does not exist.";
+        }
+
+        Movie movie = null;
+        try {
+            movie = objectMapper.readValue(movieJson, Movie.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        User user = userRepository.getUserByFirstName(userFirstName).orElse(null);
+
+        user.getMovies().add(movie);
+        userRepository.save(user);
+
+        String userJson = "";
+        try {
+            userJson = objectMapper.writeValueAsString(user);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return userJson;
+    }
+
+
 
     private Address getAddressForUser(User user) {
         String addressServiceUrl = String.format("http://localhost:8082/address/create?userId=%s", user.getId());

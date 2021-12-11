@@ -16,7 +16,6 @@ public class UserController {
         this.gson = gson;
     }
 
-    //http://localhost:8081/user/create?firstName=Gosho&lastName=Goshov
     @PostMapping("/user/create")
     public String createUser(@RequestParam String firstName,
                              @RequestParam String lastName) {
@@ -27,14 +26,12 @@ public class UserController {
         return user;
     }
 
-    //http://localhost:8081/user/{firstName}
     @GetMapping("/user/{firstName}")
     public String getUser(@PathVariable String firstName, @RequestParam int transactionsCount) {
 
         return userService.getUser(firstName, transactionsCount);
     }
 
-    //http://localhost:8081/user/address/create
     @PostMapping("user/address/create")
     public String createAddress(@RequestParam String firstName) {
         return userService.createAddressForUser(firstName);
@@ -53,5 +50,11 @@ public class UserController {
     @DeleteMapping("/user/{firstName}")
     public String deleteUser(@PathVariable String firstName){
         return userService.deleteUser(firstName);
+    }
+
+
+    @GetMapping("user/{userFirstName}/movie/{movieName}")
+    public String rentMovie(@PathVariable String userFirstName, @PathVariable String movieName){
+        return userService.rentMovie(movieName, userFirstName);
     }
 }

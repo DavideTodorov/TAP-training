@@ -17,10 +17,14 @@ public class User {
     private List<Address> addresses;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Transaction> transactions;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Movie> movies;
+
 
     public User() {
         this.addresses = new ArrayList<>();
         this.transactions = new ArrayList<>();
+        this.movies = new ArrayList<>();
     }
 
     public User(String firstName, String lastName) {
@@ -29,6 +33,7 @@ public class User {
         this.lastName = lastName;
         this.addresses = new ArrayList<>();
         this.transactions = new ArrayList<>();
+        this.movies = new ArrayList<>();
     }
 
     public UUID getId() {
@@ -69,5 +74,13 @@ public class User {
 
     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
     }
 }
