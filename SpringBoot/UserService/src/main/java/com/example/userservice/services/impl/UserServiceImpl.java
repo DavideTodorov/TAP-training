@@ -214,6 +214,14 @@ public class UserServiceImpl implements UserService {
         return userJson;
     }
 
+    @Override
+    public String getAllMovies() {
+        String movieURL = String.format("http://localhost:8085/movie/all");
+        RestTemplate template = new RestTemplate();
+        String allMoviesJson = template.getForObject(movieURL, String.class);
+
+        return allMoviesJson;
+    }
 
 
     private Address getAddressForUser(User user) {

@@ -38,23 +38,28 @@ public class UserController {
     }
 
     @PostMapping("user/transaction/create")
-    public String createTransaction(@RequestParam String firstName){
+    public String createTransaction(@RequestParam String firstName) {
         return userService.createTransaction(firstName);
     }
 
     @PatchMapping("/user/{firstName}")
-    public String updateUser(@PathVariable String firstName, @RequestParam String newFirstName, @RequestParam String newLastName){
+    public String updateUser(@PathVariable String firstName, @RequestParam String newFirstName, @RequestParam String newLastName) {
         return userService.updateUser(firstName, newFirstName, newLastName);
     }
 
     @DeleteMapping("/user/{firstName}")
-    public String deleteUser(@PathVariable String firstName){
+    public String deleteUser(@PathVariable String firstName) {
         return userService.deleteUser(firstName);
     }
 
 
     @GetMapping("user/{userFirstName}/movie/{movieName}")
-    public String rentMovie(@PathVariable String userFirstName, @PathVariable String movieName){
+    public String rentMovie(@PathVariable String userFirstName, @PathVariable String movieName) {
         return userService.rentMovie(movieName, userFirstName);
+    }
+
+    @GetMapping("/user/movies/all")
+    public String getAllMovies() {
+        return userService.getAllMovies();
     }
 }

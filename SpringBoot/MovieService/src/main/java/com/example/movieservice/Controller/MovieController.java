@@ -16,9 +16,9 @@ public class MovieController {
         this.movieService = movieService;
     }
 
-    @GetMapping("/movie/available")
+    @GetMapping("/movie/all")
     public String getAllAvailableMovies(){
-        return movieService.getAllAvailableMovies();
+        return movieService.getAllMovies();
     }
 
     @GetMapping("movie/{movieName}")

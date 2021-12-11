@@ -20,11 +20,11 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public String getAllAvailableMovies() {
+    public String getAllMovies() {
         String moviesListJson = "";
 
         try {
-            moviesListJson = objectMapper.writeValueAsString(movieRepository.findAllAvailableMovies());
+            moviesListJson = objectMapper.writeValueAsString(movieRepository.findAll());
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
