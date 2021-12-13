@@ -1,6 +1,10 @@
 databaseChangeLog:
-  - include:
-      file: db/changelog/2021/12/13-01-changelog.yaml.xml
+  - changeSet:
+      id: 1
+      author: Davide
 
-  - include:
-      file: db/changelog/03-liquibase-diff-changelog.yaml
+#  - include:
+#      file: db/changelog/2021/12/13-01-changelog.yaml.xml
+
+#  - include:
+#      file: db/changelog/03-liquibase-diff-changelog.yaml
