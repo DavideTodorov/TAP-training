@@ -1,0 +1,8 @@
+databaseChangeLog:
+- changeSet:
+    id: 1639390757020-1
+    author: infinitelambda (generated)
+    changes:
+    - dropTable:
+        tableName: table_name
+
