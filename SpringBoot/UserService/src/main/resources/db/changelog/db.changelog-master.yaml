@@ -4,7 +4,7 @@ databaseChangeLog:
       author: Davide
 
 #  - include:
-#      file: db/changelog/2021/12/13-01-changelog.yaml.xml
+#      file: db/changelog/2021/12/13-01-changelog.xml
 
 #  - include:
 #      file: db/changelog/03-liquibase-diff-changelog.yaml

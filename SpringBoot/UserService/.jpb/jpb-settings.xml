@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DatabaseMigrationSettings" mainChangeLogName="#date(&quot;dd&quot;)-#increment(1, 1, &quot;00&quot;)-changelog.yaml">
+  <component name="DatabaseMigrationSettings">
     <database-infos>
       <database-info>
         <option name="enabled" value="true" />
