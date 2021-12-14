@@ -9,7 +9,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -138,14 +137,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String updateUser(String firstName, String newFirstName, String newLastName) {
+    public String updateUser(String firstName, UserDTO userDTO) {
         if (!checkIfUserExists(firstName)) {
             return "User does not exist!";
         }
 
         User user = userRepository.getUserByFirstName(firstName).orElse(null);
-        user.setFirstName(newFirstName);
-        user.setLastName(newLastName);
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+
         userRepository.save(user);
 
         String userJson = "";

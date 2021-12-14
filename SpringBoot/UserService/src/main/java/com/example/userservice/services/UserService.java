@@ -12,7 +12,7 @@ public interface UserService {
 
     String createTransaction(String firstName);
 
-    String updateUser(String firstName, String newFirstName, String newLastName);
+    String updateUser(String firstName, UserDTO userDTO);
 
     String deleteUser(String firstName);
 

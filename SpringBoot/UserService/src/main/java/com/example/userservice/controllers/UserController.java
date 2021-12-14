@@ -5,6 +5,8 @@ import com.example.userservice.services.UserService;
 import com.google.gson.Gson;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 public class UserController {
 
@@ -18,10 +20,9 @@ public class UserController {
 
 
     @PostMapping("/user/create")
-    public String createUser(@RequestParam String firstName,
-                             @RequestParam String lastName) {
+    public String createUser(@RequestBody String userData) {
+        UserDTO userDTO = gson.fromJson(userData, UserDTO.class);
 
-        UserDTO userDTO = new UserDTO(firstName, lastName);
         String user = userService.createUser(userDTO);
 
         return user;
@@ -48,8 +49,10 @@ public class UserController {
 
 
     @PatchMapping("/user/{firstName}")
-    public String updateUser(@PathVariable String firstName, @RequestParam String newFirstName, @RequestParam String newLastName) {
-        return userService.updateUser(firstName, newFirstName, newLastName);
+    public String updateUser(@PathVariable String firstName, @RequestBody String userUpdateDetails) {
+        UserDTO userDTO = gson.fromJson(userUpdateDetails, UserDTO.class);
+
+        return userService.updateUser(firstName, userDTO);
     }
 
 
