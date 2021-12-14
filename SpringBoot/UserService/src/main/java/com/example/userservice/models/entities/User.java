@@ -1,5 +1,6 @@
 package com.example.userservice.models.entities;
 
+import io.mongock.api.annotations.ChangeUnit;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
