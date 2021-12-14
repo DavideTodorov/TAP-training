@@ -1,23 +1,21 @@
 package com.example.userservice.models.entities;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Entity
-@Table(name = "users")
+@Document
 public class User {
 
     @Id
     private UUID id;
     private String firstName;
     private String lastName;
-    @OneToMany(cascade = CascadeType.ALL)
     private List<Address> addresses;
-    @OneToMany(cascade = CascadeType.ALL)
     private List<Transaction> transactions;
-    @OneToMany(cascade = CascadeType.ALL)
     private List<Movie> movies;
 
 

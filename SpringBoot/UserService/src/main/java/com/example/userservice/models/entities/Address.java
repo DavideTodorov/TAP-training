@@ -1,12 +1,13 @@
 package com.example.userservice.models.entities;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.UUID;
 
-@Entity
-@Table(name = "addresses")
+@Document
 public class Address {
     @Id
     private UUID id;
