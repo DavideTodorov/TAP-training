@@ -8,7 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
 @Profile("nosqldb")
-//@EnableMongock
+@EnableMongock
 public class UserServiceApplication {
 
     public static void main(String[] args) {

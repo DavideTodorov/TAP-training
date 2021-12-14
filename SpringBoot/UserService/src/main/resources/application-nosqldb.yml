@@ -1,7 +1,12 @@
 server:
-  port : 8081
+  port: 8081
 
 spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/springBootDB
+
+
+mongock:
+  migration-scan-package:
+    - com.example.userservice.config
