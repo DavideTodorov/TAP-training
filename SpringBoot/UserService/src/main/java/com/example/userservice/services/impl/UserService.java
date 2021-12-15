@@ -4,7 +4,6 @@ import com.example.userservice.models.entities.*;
 import com.example.userservice.models.repositories.AddressRepository;
 import com.example.userservice.models.repositories.TransactionRepository;
 import com.example.userservice.models.repositories.UserRepository;
-import com.example.userservice.services.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -15,15 +14,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserService {
     private final Gson gson;
     private final ObjectMapper objectMapper;
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
     private final TransactionRepository transactionRepository;
 
-    public UserServiceImpl(Gson gson, ObjectMapper objectMapper, UserRepository userRepository,
-                           AddressRepository addressRepository, TransactionRepository transactionRepository) {
+    public UserService(Gson gson, ObjectMapper objectMapper, UserRepository userRepository,
+                       AddressRepository addressRepository, TransactionRepository transactionRepository) {
         this.gson = gson;
         this.objectMapper = objectMapper;
         this.userRepository = userRepository;
@@ -31,10 +30,9 @@ public class UserServiceImpl implements UserService {
         this.transactionRepository = transactionRepository;
     }
 
-    @Override
-    public String createUser(UserDTO userDTO) {
+    public User createUser(UserDTO userDTO) {
         if (checkIfUserExists(userDTO.getFirstName())) {
-            return "Username with the same firstName already exists.";
+            throw new IllegalStateException("User does not exist");
         }
 
         User user = new User(userDTO.getFirstName(), userDTO.getLastName());
@@ -43,20 +41,12 @@ public class UserServiceImpl implements UserService {
         addressRepository.save(addressFromJson);
         user.getAddresses().add(addressFromJson);
 
-        String userJson = "";
-        try {
-            userJson = objectMapper.writeValueAsString(user);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
         userRepository.save(user);
 
-        return userJson;
+        return user;
     }
 
 
-    @Override
     public String getUser(String firstName, int transactionsCount) {
         if (!checkIfUserExists(firstName)) {
             return "User does not exist!";
@@ -79,7 +69,6 @@ public class UserServiceImpl implements UserService {
         return userJson;
     }
 
-    @Override
     public String createAddressForUser(String firstName) {
         if (!checkIfUserExists(firstName)) {
             return "User does not exist!";
@@ -102,7 +91,6 @@ public class UserServiceImpl implements UserService {
         return userJson;
     }
 
-    @Override
     public String createTransaction(String firstName) {
         if (!checkIfUserExists(firstName)) {
             return "User does not exist!";
@@ -136,7 +124,6 @@ public class UserServiceImpl implements UserService {
         return userJson;
     }
 
-    @Override
     public String updateUser(String firstName, UserDTO userDTO) {
         if (!checkIfUserExists(firstName)) {
             return "User does not exist!";
@@ -158,7 +145,6 @@ public class UserServiceImpl implements UserService {
         return userJson;
     }
 
-    @Override
     public String deleteUser(String firstName) {
         if (!checkIfUserExists(firstName)) {
             return "User does not exist!";
@@ -177,7 +163,6 @@ public class UserServiceImpl implements UserService {
         return "User was deleted.";
     }
 
-    @Override
     public String rentMovie(String movieName, String userFirstName) {
         if (!checkIfUserExists(userFirstName)) {
             return "User does not exist!";
@@ -214,7 +199,6 @@ public class UserServiceImpl implements UserService {
         return userJson;
     }
 
-    @Override
     public String getAllMovies() {
         String movieURL = String.format("http://localhost:8085/movie/all");
         RestTemplate template = new RestTemplate();

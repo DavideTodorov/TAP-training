@@ -1,11 +1,14 @@
 package com.example.userservice.controllers;
 
+import com.example.userservice.models.entities.User;
 import com.example.userservice.models.entities.UserDTO;
-import com.example.userservice.services.UserService;
+import com.example.userservice.services.impl.UserService;
 import com.google.gson.Gson;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import javax.validation.Valid;
 
 @RestController
 public class UserController {
@@ -20,12 +23,15 @@ public class UserController {
 
 
     @PostMapping("/user/create")
-    public String createUser(@RequestBody String userData) {
-        UserDTO userDTO = gson.fromJson(userData, UserDTO.class);
+    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userData) {
+        User user = null;
+        try {
+            user = userService.createUser(userData);
+        }catch (IllegalStateException e){
+            new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
 
-        String user = userService.createUser(userDTO);
-
-        return user;
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 
