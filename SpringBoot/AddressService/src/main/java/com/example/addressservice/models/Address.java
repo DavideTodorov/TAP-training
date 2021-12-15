@@ -4,11 +4,17 @@ import java.util.UUID;
 
 public class Address {
     private UUID id;
+    private UUID userId;
     private String streetName;
 
-    public Address(String streetName) {
+    public Address(String streetName, UUID userId) {
         this.id = UUID.randomUUID();
         this.streetName = streetName;
+        this.userId = userId;
+    }
+
+    public Address(){
+
     }
 
     public UUID getId() {
@@ -25,5 +31,13 @@ public class Address {
 
     public void setStreetName(String streetName) {
         this.streetName = streetName;
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 }

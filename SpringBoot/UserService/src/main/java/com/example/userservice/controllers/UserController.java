@@ -2,7 +2,7 @@ package com.example.userservice.controllers;
 
 import com.example.userservice.models.entities.User;
 import com.example.userservice.models.entities.UserDTO;
-import com.example.userservice.services.impl.UserService;
+import com.example.userservice.services.UserService;
 import com.google.gson.Gson;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

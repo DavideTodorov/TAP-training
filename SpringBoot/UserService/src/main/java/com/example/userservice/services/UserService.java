@@ -1,4 +1,4 @@
-package com.example.userservice.services.impl;
+package com.example.userservice.services;
 
 import com.example.userservice.models.entities.*;
 import com.example.userservice.models.repositories.AddressRepository;
@@ -37,9 +37,10 @@ public class UserService {
 
         User user = new User(userDTO.getFirstName(), userDTO.getLastName());
 
-        Address addressFromJson = getAddressForUser(user);
-        addressRepository.save(addressFromJson);
-        user.getAddresses().add(addressFromJson);
+        String addressServiceUrl = String.format("http://localhost:8082/address/create?userId=%s", user.getId());
+
+        RestTemplate template = new RestTemplate();
+        String result = template.postForObject(addressServiceUrl, null, String.class);
 
         userRepository.save(user);
 

@@ -2,6 +2,8 @@ package com.example.addressservice.controllers;
 
 import com.example.addressservice.models.Address;
 import com.example.addressservice.services.AddressService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -14,11 +16,11 @@ public class AddressController {
         this.addressService = addressService;
     }
 
-
     @PostMapping("/address/create")
-    public String createAddress(@RequestParam UUID userId) {
-        String address = addressService.createAddress(userId);
-        return address;
+    public ResponseEntity<Address> createAddress(@RequestParam UUID userId) {
+        Address address = addressService.createAddress(userId);
+
+        return new ResponseEntity<>(address, HttpStatus.OK);
     }
 
     @GetMapping("/address/{userId}")
