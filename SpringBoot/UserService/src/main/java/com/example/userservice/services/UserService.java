@@ -8,17 +8,21 @@ import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Service
 public class UserService {
     private final Gson gson;
     private final ObjectMapper objectMapper;
     private final UserRepository userRepository;
+    private final RestTemplate template;
 
 
     public UserService(Gson gson, ObjectMapper objectMapper, UserRepository userRepository) {
         this.gson = gson;
         this.objectMapper = objectMapper;
         this.userRepository = userRepository;
+        template = new RestTemplate();
     }
 
     public User createUser(UserRequestDTO userDTO) {
@@ -29,9 +33,6 @@ public class UserService {
         User user = new User(userDTO.getFirstName(), userDTO.getLastName());
 
         String addressServiceUrl = String.format("http://localhost:8082/address/create?userId=%s", user.getId());
-
-
-        RestTemplate template = new RestTemplate();
         Address address = template.postForObject(addressServiceUrl, null, Address.class);
 
         userRepository.save(user);
@@ -40,10 +41,24 @@ public class UserService {
     }
 
 
-    public String getUser(String firstName, int transactionsCount) {
+    public UserResponseDTO getUser(String firstName) {
+        if (!checkIfUserExists(firstName)) {
+            throw new IllegalStateException("User does not exist");
+        }
 
-        return "userJson";
+        User user = userRepository.getUserByFirstName(firstName).get();
+
+        String addressServiceUrl = String.format("http://localhost:8082/address/%s", user.getId());
+        Address[] addressesForUse = template.getForObject(addressServiceUrl, Address[].class);
+
+        UserResponseDTO userResponseDTO = new UserResponseDTO();
+        userResponseDTO.setFirstName(user.getFirstName());
+        userResponseDTO.setLastName(user.getLastName());
+        userResponseDTO.setAddresses(List.of(addressesForUse));
+
+        return userResponseDTO;
     }
+
 
     public String createAddressForUser(String firstName) {
 

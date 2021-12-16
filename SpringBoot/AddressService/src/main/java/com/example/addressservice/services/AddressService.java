@@ -1,11 +1,14 @@
 package com.example.addressservice.services;
 
 import com.example.addressservice.models.Address;
+import com.example.addressservice.models.AddressResponseDTO;
 import com.example.addressservice.repositories.AddressRepository;
 import com.google.gson.Gson;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class AddressService {
@@ -28,8 +31,12 @@ public class AddressService {
         return address;
     }
 
-    public String getAddress(UUID userId) {
+    public List<AddressResponseDTO> getAddress(UUID userId) {
+        List<Address> addressesForUser = addressRepository.findAllByUserId(userId);
 
-        return "gson.toJson(usersAddresses.get(userId))";
+        return addressesForUser
+                .stream()
+                .map(a -> new AddressResponseDTO(a.getId(), a.getStreetName()))
+                .collect(Collectors.toList());
     }
 }

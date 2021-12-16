@@ -2,9 +2,11 @@ package com.example.userservice.controllers;
 
 import com.example.userservice.models.entities.User;
 import com.example.userservice.models.entities.UserRequestDTO;
+import com.example.userservice.models.entities.UserResponseDTO;
 import com.example.userservice.services.UserService;
 import com.google.gson.Gson;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,8 +30,8 @@ public class UserController {
 
         try {
             user = userService.createUser(userData);
-        }catch (IllegalStateException e){
-           return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(null);
         }
 
         return ResponseEntity.ok(user);
@@ -37,9 +39,16 @@ public class UserController {
 
 
     @GetMapping("/user/{firstName}")
-    public String getUser(@PathVariable String firstName, @RequestParam int transactionsCount) {
+    public ResponseEntity<UserResponseDTO> getUser(@PathVariable String firstName) {
+        UserResponseDTO userResponseDTO = null;
 
-        return userService.getUser(firstName, transactionsCount);
+        try {
+            userResponseDTO = userService.getUser(firstName);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        return ResponseEntity.ok(userResponseDTO);
     }
 
 
