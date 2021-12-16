@@ -1,7 +1,7 @@
 package com.example.userservice.controllers;
 
 import com.example.userservice.models.entities.User;
-import com.example.userservice.models.entities.UserDTO;
+import com.example.userservice.models.entities.UserRequestDTO;
 import com.example.userservice.services.UserService;
 import com.google.gson.Gson;
 import org.springframework.http.HttpStatus;
@@ -23,15 +23,16 @@ public class UserController {
 
 
     @PostMapping("/user/create")
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userData) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody UserRequestDTO userData) {
         User user = null;
+
         try {
             user = userService.createUser(userData);
         }catch (IllegalStateException e){
-            new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+           return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         }
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return ResponseEntity.ok(user);
     }
 
 
@@ -56,7 +57,7 @@ public class UserController {
 
     @PatchMapping("/user/{firstName}")
     public String updateUser(@PathVariable String firstName, @RequestBody String userUpdateDetails) {
-        UserDTO userDTO = gson.fromJson(userUpdateDetails, UserDTO.class);
+        UserRequestDTO userDTO = gson.fromJson(userUpdateDetails, UserRequestDTO.class);
 
         return userService.updateUser(firstName, userDTO);
     }

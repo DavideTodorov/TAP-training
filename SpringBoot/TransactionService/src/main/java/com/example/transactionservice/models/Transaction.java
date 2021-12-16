@@ -3,6 +3,7 @@ package com.example.transactionservice.models;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+
 public class Transaction {
 
     private UUID id;

@@ -1,16 +1,15 @@
 package com.example.userservice.models.entities;
 
 import javax.validation.constraints.NotBlank;
-import java.util.UUID;
 
-public class UserDTO {
+public class UserRequestDTO {
 
 
     @NotBlank
     private String firstName;
     private String lastName;
 
-    public UserDTO() {
+    public UserRequestDTO() {
     }
 
 

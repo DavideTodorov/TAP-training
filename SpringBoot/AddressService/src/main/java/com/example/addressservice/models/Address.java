@@ -1,8 +1,13 @@
 package com.example.addressservice.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.UUID;
 
+@Entity
 public class Address {
+
+    @Id
     private UUID id;
     private UUID userId;
     private String streetName;

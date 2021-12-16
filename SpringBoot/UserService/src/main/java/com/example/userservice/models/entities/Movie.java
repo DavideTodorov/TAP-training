@@ -6,11 +6,9 @@ import javax.persistence.Table;
 import java.util.UUID;
 
 
-@Entity
-@Table(name = "movies")
+
 public class Movie {
 
-    @Id
     private UUID id;
     private String name;
     private boolean isAvailable;

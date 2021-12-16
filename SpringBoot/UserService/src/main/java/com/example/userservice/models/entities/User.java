@@ -13,27 +13,14 @@ public class User {
     private UUID id;
     private String firstName;
     private String lastName;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Address> addresses;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Transaction> transactions;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Movie> movies;
-
 
     public User() {
-        this.addresses = new ArrayList<>();
-        this.transactions = new ArrayList<>();
-        this.movies = new ArrayList<>();
     }
 
     public User(String firstName, String lastName) {
         this.id = UUID.randomUUID();
         this.firstName = firstName;
         this.lastName = lastName;
-        this.addresses = new ArrayList<>();
-        this.transactions = new ArrayList<>();
-        this.movies = new ArrayList<>();
     }
 
     public UUID getId() {
@@ -58,29 +45,5 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public List<Address> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
-    }
-
-    public List<Transaction> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
-    }
-
-    public List<Movie> getMovies() {
-        return movies;
-    }
-
-    public void setMovies(List<Movie> movies) {
-        this.movies = movies;
     }
 }

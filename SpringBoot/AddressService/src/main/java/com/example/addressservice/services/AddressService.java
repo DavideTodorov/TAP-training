@@ -10,11 +10,9 @@ import java.util.*;
 @Service
 public class AddressService {
 
-    private final Gson gson;
     private final AddressRepository addressRepository;
 
-    public AddressService(Gson gson, AddressRepository addressRepository) {
-        this.gson = gson;
+    public AddressService(AddressRepository addressRepository) {
         this.addressRepository = addressRepository;
     }
 
@@ -24,10 +22,10 @@ public class AddressService {
         int i = random.nextInt(1001);
         Address address = new Address(String.format("%d street", i), userId);
 
-        Address savedAddress = addressRepository.save(address);
+        addressRepository.save(address);
 
 
-        return savedAddress;
+        return address;
     }
 
     public String getAddress(UUID userId) {
