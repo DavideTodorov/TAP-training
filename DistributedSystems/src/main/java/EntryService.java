@@ -1,5 +1,15 @@
 import java.util.concurrent.atomic.AtomicInteger;
 
+
+
+/**
+ * We should have duplicates of both services in order to ensure
+ * that in case of some kind of failure we have another instance
+ * of the service that can be used.
+ */
+
+
+
 public class EntryService {
     //Max capacity of the parking
     private static final int MAX_CAPACITY = 100;
