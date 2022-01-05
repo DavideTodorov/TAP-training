@@ -1,0 +1,68 @@
+version: '3.8'
+
+volumes:
+  data:
+
+networks:
+  my-network:
+    driver: bridge
+
+services:
+  db:
+    hostname: db
+    image: "postgres:latest"
+    restart: always
+    container_name: db
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: springAppDB
+    ports:
+      - "5432:5432"
+    networks:
+      - my-network
+
+  user-service:
+    hostname: user-service
+    container_name: user-service
+    build: /Users/davidetodorov/Desktop/TAP-training/SpringBoot/UserService/
+    restart: always
+    networks:
+      - my-network
+    ports:
+      - "8050:8081"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/springAppDB
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  address-service:
+    hostname: address-service
+    container_name: address-service
+    build: /Users/davidetodorov/Desktop/TAP-training/SpringBoot/AddressService/
+    restart: always
+    networks:
+      - my-network
+    ports:
+      - "8060:8082"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/springAppDB
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+
+  transaction-service:
+    hostname: transaction-service
+    container_name: transaction-service
+    build: /Users/davidetodorov/Desktop/TAP-training/SpringBoot/TransactionService/
+    restart: always
+    networks:
+      - my-network
+    ports:
+      - "8070:8083"

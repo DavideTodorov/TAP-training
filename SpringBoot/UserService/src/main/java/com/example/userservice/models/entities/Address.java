@@ -1,16 +1,19 @@
 package com.example.userservice.models.entities;
 
+import liquibase.pro.packaged.I;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.UUID;
 
-
+@Entity
 public class Address {
+    @Id
     private UUID id;
     private String streetName;
 
-    public Address(){
+    public Address() {
     }
 
     public UUID getId() {

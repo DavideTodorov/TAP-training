@@ -37,7 +37,7 @@ public class UserService {
 
         User user = new User(userDTO.getFirstName(), userDTO.getLastName());
 
-        String addressServiceUrl = String.format("http://localhost:8082/address/create?userId=%s", user.getId());
+        String addressServiceUrl = String.format("http://address-service:8082/address/create?userId=%s", user.getId());
 
         RestTemplate template = new RestTemplate();
         String result = template.postForObject(addressServiceUrl, null, String.class);
@@ -209,7 +209,7 @@ public class UserService {
     }
 
     private Address getAddressForUser(User user) {
-        String addressServiceUrl = String.format("http://localhost:8082/address/create?userId=%s", user.getId());
+        String addressServiceUrl = String.format("http://address-service:8082/address/create?userId=%s", user.getId());
 
         RestTemplate template = new RestTemplate();
         String result = template.postForObject(addressServiceUrl, null, String.class);
