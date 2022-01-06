@@ -66,3 +66,14 @@ services:
       - my-network
     ports:
       - "8070:8083"
+
+  transaction-3rd-api:
+    hostname: transaction-3rd-api
+    container_name: transaction-3rd-api
+    build: /Users/davidetodorov/Desktop/TAP-training/SpringBoot/FastApiDemo-master copy 2/
+    restart: always
+    networks:
+      - my-network
+    ports:
+      - "8040:8000"
+

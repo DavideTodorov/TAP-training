@@ -27,7 +27,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public String createTransaction(UUID userId) {
-        String transactionApiUrl = "http://localhost:8000/info/generate/id";
+        String transactionApiUrl = "http://transaction-3rd-api:8000/info/generate/id";
 
         RestTemplate template = new RestTemplate();
 

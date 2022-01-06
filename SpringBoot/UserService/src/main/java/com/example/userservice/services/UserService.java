@@ -98,7 +98,7 @@ public class UserService {
         }
 
         User user = userRepository.getUserByFirstName(firstName).orElse(null);
-        String addressServiceUrl = String.format("http://localhost:8083/transaction/new?userId=%s", user.getId());
+        String addressServiceUrl = String.format("http://transaction-service:8083/transaction/new?userId=%s", user.getId());
 
         RestTemplate template = new RestTemplate();
         String result = template.postForObject(addressServiceUrl, null, String.class);
