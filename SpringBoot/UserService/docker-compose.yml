@@ -25,7 +25,7 @@ services:
   user-service:
     hostname: user-service
     container_name: user-service
-    build: /Users/davidetodorov/Desktop/TAP-training/SpringBoot/UserService/
+    build: /SpringBoot/UserService/
     restart: always
     networks:
       - my-network
@@ -42,7 +42,7 @@ services:
   address-service:
     hostname: address-service
     container_name: address-service
-    build: /Users/davidetodorov/Desktop/TAP-training/SpringBoot/AddressService/
+    build: SpringBoot/AddressService/
     restart: always
     networks:
       - my-network
@@ -60,7 +60,7 @@ services:
   transaction-service:
     hostname: transaction-service
     container_name: transaction-service
-    build: /Users/davidetodorov/Desktop/TAP-training/SpringBoot/TransactionService/
+    build: SpringBoot/TransactionService/
     restart: always
     networks:
       - my-network
@@ -70,7 +70,7 @@ services:
   transaction-3rd-api:
     hostname: transaction-3rd-api
     container_name: transaction-3rd-api
-    build: /Users/davidetodorov/Desktop/TAP-training/SpringBoot/FastApiDemo-master copy 2/
+    build: SpringBoot/FastApiDemo-master copy 2/
     restart: always
     networks:
       - my-network
